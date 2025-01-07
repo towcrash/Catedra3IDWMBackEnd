@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
+using catedra3.src.data;
 using catedra3.src.dtos;
+using catedra3.src.Helpers;
 using catedra3.src.interfaces;
 using catedra3.src.models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace catedra3.src.repository
 {
@@ -15,12 +19,14 @@ namespace catedra3.src.repository
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly ApplicationDBContext _context;
 
-        public AuthRepository(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
+        public AuthRepository(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager, ApplicationDBContext context)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
+            _context = context;
         }
         public async Task<NewUserDto> RegisterAsync(RegisterDto registerDto)
         {
@@ -28,10 +34,14 @@ namespace catedra3.src.repository
             {
                 throw new ArgumentException("Password is required");
             }
-
+            if (await EmailExistsAsync(registerDto.Email))
+            {
+                throw new Exception("A product with the same name and type already exists.");
+            }
             var user = new AppUser
             {
-                Email = registerDto.Email,
+                UserName = RandomStringGenerator.Generate(),
+                Email = registerDto.Email
             };
 
             var createUser = await _userManager.CreateAsync(user, registerDto.Password);
@@ -41,14 +51,6 @@ namespace catedra3.src.repository
                 throw new InvalidOperationException(string.Join("; ", createUser.Errors.Select(e => e.Description)));
             }
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "User");
-
-            if (!roleResult.Succeeded)
-            {
-                throw new InvalidOperationException(string.Join("; ", roleResult.Errors.Select(e => e.Description)));
-            }
-
-            var roles = await _userManager.GetRolesAsync(user);
 
             // El usuario es creado exitosamente
             return new NewUserDto
@@ -73,13 +75,15 @@ namespace catedra3.src.repository
                 throw new UnauthorizedAccessException("Invalid user or password");
             }
 
-            var roles = await _userManager.GetRolesAsync(user);
-
             return new NewUserDto
             {
                 Email = user.Email!,
                 Token = await _tokenService.CreateToken(user)
             };
+        }
+        private async Task<bool> EmailExistsAsync(string email)
+        {
+            return await _context.Users.AnyAsync(u => u.Email == email); 
         }
     }
 }

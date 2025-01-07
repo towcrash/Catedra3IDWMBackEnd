@@ -35,9 +35,11 @@ builder.Services.AddSingleton(cloudinary);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => 
     {
         options.Password.RequireDigit = true;
@@ -100,9 +102,22 @@ builder.Services.AddSwaggerGen(option =>
 string connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? "Data Source=app.db";
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlite(connectionString));
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder
+                .WithOrigins("http://localhost:4200") 
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials(); 
+        });
+});
 
 var app = builder.Build();
+
+app.UseCors("AllowSpecificOrigin");
 
 using (var scope = app.Services.CreateScope())
 {

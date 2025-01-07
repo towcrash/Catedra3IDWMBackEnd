@@ -12,8 +12,6 @@ namespace catedra3.src.dtos
         [MinLength(5, ErrorMessage = "Title must contain at least 5 characters")]
         public required string Title {get; set;}
         
-        [Required]
-        public DateTime PublishDate { get; set; }
 
         [Required]
         public required IFormFile? Image { get; set; }

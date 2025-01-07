@@ -7,7 +7,7 @@ namespace catedra3.src.models
 {
     public class Post
     {
-        public string Id { get; set; } = string.Empty;
+        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public DateTime PublishDate { get; set; }
         public string ImageUrl { get; set; } = string.Empty;

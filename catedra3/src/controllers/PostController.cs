@@ -21,6 +21,7 @@ namespace catedra3.src.controllers
             _postRepository = postRepository;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll() 
         {
             var posts = await _postRepository.GetAllPosts();
@@ -30,7 +31,7 @@ namespace catedra3.src.controllers
         [HttpGet]
         [Route("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetById([FromRoute] string id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var post = await _postRepository.GetById(id);
 
@@ -46,10 +47,12 @@ namespace catedra3.src.controllers
         [Authorize]
         public async Task<IActionResult> PostAsync([FromForm] PostDto postDto)
         {
+            DateTime time = DateTime.Now;
+            string formattedTime = time.ToString("yyyy-MM-dd HH:mm:ss");
             var postModel = new Post
             {
                 Title = postDto.Title,
-                PublishDate = postDto.PublishDate
+                PublishDate = time
             };
             await _postRepository.Post(postModel, postDto.Image); 
 

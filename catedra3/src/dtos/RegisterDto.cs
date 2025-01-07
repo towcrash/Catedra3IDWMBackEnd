@@ -9,6 +9,7 @@ namespace catedra3.src.dtos
 {
     public class RegisterDto
     {
+
         [EmailAddress]
         [Required]
         public string Email {get; set;} = null!;
