@@ -9,6 +9,7 @@ namespace catedra3.src.interfaces
     public interface IPostRepository
     {
         Task<List<Post>> GetAllPosts();
+        Task<Post?> GetById(string id);
         Task<Post> Post(Post post, IFormFile? image);
 
     }

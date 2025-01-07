@@ -26,6 +26,10 @@ namespace catedra3.src.repository
         {
             return await _context.Posts.ToListAsync();
         }
+        public async Task<Post?> GetById(string id) 
+        {
+            return await _context.Posts.FindAsync(id);
+        }
 
         public async Task<Post> Post(Post post, IFormFile? image)
         {
