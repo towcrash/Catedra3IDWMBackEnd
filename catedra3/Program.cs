@@ -1,7 +1,12 @@
 using System.Security.Claims;
 using System.Text;
 using catedra3.src.data;
+using catedra3.src.interfaces;
 using catedra3.src.models;
+using catedra3.src.repository;
+using catedra3.src.service;
+using CloudinaryDotNet;
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +15,27 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Env.Load();
+
+var cloudName = Environment.GetEnvironmentVariable("CloudinaryName");
+var apiKey = Environment.GetEnvironmentVariable("ApiKey");
+var apiSecret = Environment.GetEnvironmentVariable("ApiSecret");
+
+
+if (cloudName == null || apiKey == null || apiSecret == null)
+{
+    throw new Exception("Cloudinary settings not found in environment variables.");
+}
+
+var cloudinaryAccount = new Account(cloudName, apiKey, apiSecret);
+var cloudinary = new Cloudinary(cloudinaryAccount);
+
+builder.Services.AddSingleton(cloudinary);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => 
     {
         options.Password.RequireDigit = true;
