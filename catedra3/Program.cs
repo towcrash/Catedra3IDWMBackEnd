@@ -34,8 +34,10 @@ builder.Services.AddSingleton(cloudinary);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => 
     {
         options.Password.RequireDigit = true;
