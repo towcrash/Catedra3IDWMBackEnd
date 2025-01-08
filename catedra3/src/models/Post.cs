@@ -9,7 +9,7 @@ namespace catedra3.src.models
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
-        public DateTime PublishDate { get; set; }
+        public string PublishDate { get; set; } = string.Empty;
         public string ImageUrl { get; set; } = string.Empty;
 
     }

@@ -52,7 +52,7 @@ namespace catedra3.src.controllers
             var postModel = new Post
             {
                 Title = postDto.Title,
-                PublishDate = time
+                PublishDate = formattedTime
             };
             await _postRepository.Post(postModel, postDto.Image); 
 

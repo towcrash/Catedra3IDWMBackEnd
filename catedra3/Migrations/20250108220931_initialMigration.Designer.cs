@@ -8,11 +8,11 @@ using catedra3.src.data;
 
 #nullable disable
 
-namespace catedra3.src.data.migrations
+namespace catedra3.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250107030556_id to int")]
-    partial class idtoint
+    [Migration("20250108220931_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -222,7 +222,8 @@ namespace catedra3.src.data.migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("PublishDate")
+                    b.Property<string>("PublishDate")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")

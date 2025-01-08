@@ -2,20 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using catedra3.src.data;
 
 #nullable disable
 
-namespace catedra3.src.data.migrations
+namespace catedra3.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250106221330_initialMigration")]
-    partial class initialMigration
+    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -214,11 +211,9 @@ namespace catedra3.src.data.migrations
 
             modelBuilder.Entity("catedra3.src.models.Post", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -233,8 +228,6 @@ namespace catedra3.src.data.migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("Posts");
                 });
@@ -288,18 +281,6 @@ namespace catedra3.src.data.migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("catedra3.src.models.Post", b =>
-                {
-                    b.HasOne("catedra3.src.models.AppUser", null)
-                        .WithMany("Posts")
-                        .HasForeignKey("AppUserId");
-                });
-
-            modelBuilder.Entity("catedra3.src.models.AppUser", b =>
-                {
-                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }
