@@ -7,7 +7,7 @@ using catedra3.src.data;
 
 #nullable disable
 
-namespace catedra3.Migrations
+namespace catedra3.src.data.migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
     partial class ApplicationDBContextModelSnapshot : ModelSnapshot
@@ -215,6 +215,12 @@ namespace catedra3.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AppUserId1")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -228,6 +234,8 @@ namespace catedra3.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppUserId1");
 
                     b.ToTable("Posts");
                 });
@@ -281,6 +289,15 @@ namespace catedra3.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("catedra3.src.models.Post", b =>
+                {
+                    b.HasOne("catedra3.src.models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId1");
+
+                    b.Navigation("AppUser");
                 });
 #pragma warning restore 612, 618
         }

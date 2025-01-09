@@ -52,7 +52,8 @@ namespace catedra3.src.controllers
             var postModel = new Post
             {
                 Title = postDto.Title,
-                PublishDate = formattedTime
+                PublishDate = formattedTime,
+                AppUserId = postDto.AppUserId
             };
             await _postRepository.Post(postModel, postDto.Image); 
 

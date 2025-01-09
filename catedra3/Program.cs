@@ -119,10 +119,18 @@ var app = builder.Build();
 
 app.UseCors("AllowSpecificOrigin");
 
-using (var scope = app.Services.CreateScope())
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+try
 {
-    var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDBContext>();
+    await context.Database.MigrateAsync();
+    
+}
+catch (Exception ex)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred during migration");
 }
 
 if (app.Environment.IsDevelopment())
