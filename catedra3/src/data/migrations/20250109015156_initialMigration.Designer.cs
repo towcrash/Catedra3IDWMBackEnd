@@ -11,7 +11,7 @@ using catedra3.src.data;
 namespace catedra3.src.data.migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250109005551_initialMigration")]
+    [Migration("20250109015156_initialMigration")]
     partial class initialMigration
     {
         /// <inheritdoc />
@@ -218,12 +218,6 @@ namespace catedra3.src.data.migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("AppUserId1")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -237,8 +231,6 @@ namespace catedra3.src.data.migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId1");
 
                     b.ToTable("Posts");
                 });
@@ -292,15 +284,6 @@ namespace catedra3.src.data.migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("catedra3.src.models.Post", b =>
-                {
-                    b.HasOne("catedra3.src.models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId1");
-
-                    b.Navigation("AppUser");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using catedra3.src.dtos;
+using catedra3.src.Helpers;
 using catedra3.src.interfaces;
 using catedra3.src.models;
 using CloudinaryDotNet;
@@ -53,7 +54,6 @@ namespace catedra3.src.controllers
             {
                 Title = postDto.Title,
                 PublishDate = formattedTime,
-                AppUserId = postDto.AppUserId
             };
             await _postRepository.Post(postModel, postDto.Image); 
 
