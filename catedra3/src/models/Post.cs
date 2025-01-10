@@ -11,7 +11,7 @@ namespace catedra3.src.models
         public string Title { get; set; } = string.Empty;
         public string PublishDate { get; set; } = string.Empty;
         public string ImageUrl { get; set; } = string.Empty;
-
-
+        public string AppUserI { get; set; } = string.Empty;
+        public AppUser AppUser { get; set; } = null!;
     }
 }

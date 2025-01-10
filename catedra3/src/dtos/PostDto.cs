@@ -15,6 +15,8 @@ namespace catedra3.src.dtos
 
         [Required]
         public required IFormFile? Image { get; set; }
+        [Required]
+        public required string AppUserId { get; set; }
         
     }
 }

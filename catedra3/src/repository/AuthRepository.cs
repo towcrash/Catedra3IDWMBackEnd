@@ -77,6 +77,7 @@ namespace catedra3.src.repository
 
             return new NewUserDto
             {
+                id = user.Id,
                 Email = user.Email!,
                 Token = await _tokenService.CreateToken(user)
             };

@@ -8,6 +8,8 @@ namespace catedra3.src.dtos
 {
     public class NewUserDto
     {
+        [Required]
+        public string id {get; set;} = null!;
         [EmailAddress]
         [Required]
         public string Email {get; set;} = null!;

@@ -54,6 +54,7 @@ namespace catedra3.src.controllers
             {
                 Title = postDto.Title,
                 PublishDate = formattedTime,
+                AppUserI = postDto.AppUserId
             };
             await _postRepository.Post(postModel, postDto.Image); 
 
